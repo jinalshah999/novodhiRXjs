@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ngNepalDemo"
+    }
+  },
+  "defaultProject": "ngNepalDemo",
+  "cli": {
+    "analytics": false
+  }
 }
