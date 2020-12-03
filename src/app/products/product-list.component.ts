@@ -25,8 +25,26 @@ export class ProductListComponent {
       return EMPTY;
     })
   );
-  product$ = this.productService.productswithcategories$;
-  onSelected(categoryId: string): void {}
 
-  onAdd(): void {}
+  private categorySelectedSubject = new BehaviorSubject<number>(0);
+  categorySelectedAction$ = this.categorySelectedSubject.asObservable();
+
+  onSelected(categoryId: string): void {
+    this.categorySelectedSubject.next(+categoryId);
+  }
+
+  product$ = combineLatest([
+    this.productService.productwithadd$,
+    this.categorySelectedAction$,
+  ]).pipe(
+    map(([products, selectedCategoryId]) => {
+      return products.filter((x) =>
+        selectedCategoryId ? x.categoryId == selectedCategoryId : true
+      );
+    })
+  );
+
+  onAdd(): void {
+    this.productService.addProduct();
+  }
 }

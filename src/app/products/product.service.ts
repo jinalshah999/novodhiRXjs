@@ -60,6 +60,29 @@ export class ProductService {
     }),
     catchError(this.handleError)
   );
+
+  private productInsertSubject = new Subject<Product>();
+  productInsertedAction$ = this.productInsertSubject.asObservable();
+
+  addProduct(newProduct?: Product) {
+    newProduct = {
+      id: 42,
+      productName: 'Another One',
+      productCode: 'TBX-0042',
+      description: 'Our new product',
+      price: 8.9,
+      categoryId: 3,
+      category: 'Toolbox',
+      quantityInStock: 30,
+    };
+    this.productInsertSubject.next(newProduct);
+  }
+
+  productwithadd$ = merge(
+    this.productswithcategories$,
+    this.productInsertedAction$
+  ).pipe(scan((acc: Product[], value: Product) => [...acc, value]));
+
   // getAllPRoducts() {
   //   return this.http.get<Product[]>(this.productsUrl).pipe(
   //     tap((data) => console.log('products ', JSON.stringify(data))),
