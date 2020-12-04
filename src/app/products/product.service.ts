@@ -72,7 +72,7 @@ export class ProductService {
       description: 'Our new product',
       price: 8.9,
       categoryId: 3,
-      category: 'Toolbox',
+      category: 'Electronics',
       quantityInStock: 30,
     };
     this.productInsertSubject.next(newProduct);
@@ -83,6 +83,22 @@ export class ProductService {
     this.productInsertedAction$
   ).pipe(scan((acc: Product[], value: Product) => [...acc, value]));
 
+  private productSelectedSubject = new BehaviorSubject<number>(0);
+  productSelectedAction$ = this.productSelectedSubject.asObservable();
+
+  selectedProduct$ = combineLatest([
+    this.productswithcategories$,
+    this.productSelectedAction$,
+  ]).pipe(
+    map(([products, selectedProductId]) =>
+      products.find((x) => x.id == selectedProductId)
+    ),
+    catchError(this.handleError)
+  );
+
+  selectedProductChanged(productId: number) {
+    this.productSelectedSubject.next(productId);
+  }
   // getAllPRoducts() {
   //   return this.http.get<Product[]>(this.productsUrl).pipe(
   //     tap((data) => console.log('products ', JSON.stringify(data))),

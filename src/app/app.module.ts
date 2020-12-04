@@ -6,8 +6,17 @@ import { AppData } from './app-data';
 
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './products/product-list.component';
+import { ProductshellComponent } from './productshell/productshell.component';
+import { ProductdetailsComponent } from './productshell/productdetails/productdetails.component';
+import { ProductlistingComponent } from './productshell/productlisting/productlisting.component';
 @NgModule({
-  declarations: [AppComponent, ProductListComponent],
+  declarations: [
+    AppComponent,
+    ProductListComponent,
+    ProductshellComponent,
+    ProductdetailsComponent,
+    ProductlistingComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
